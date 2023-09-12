@@ -6,13 +6,13 @@ echo "Port: $PORT"
 # POST method predict
 curl -d '{  
    "CHAS":{  
-      "0":0
+      "0":1
    },
    "RM":{  
-      "0":6.575
+      "0":6.6
    },
    "TAX":{  
-      "0":296.0
+      "0":300.0
    },
    "PTRATIO":{  
       "0":15.3
