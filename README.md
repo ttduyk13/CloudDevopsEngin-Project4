@@ -1,4 +1,5 @@
-<include a CircleCI status badge, here>
+# Template:
+[![<ttduyk13>](https://circleci.com/gh/ttduyk13/CloudDevopsEngin-Project4.svg?style=svg)](https://circleci.com/gh/ttduyk13/CloudDevopsEngin-Project4/?branch=main)
 
 ## Project Overview
 
