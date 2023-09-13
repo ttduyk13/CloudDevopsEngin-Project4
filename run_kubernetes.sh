@@ -4,11 +4,27 @@
 
 # Step 1:
 # This is your Docker ID/path
-dockerpath="leok13/duytt10-clouddevopsengin-project4"
+app="duytt10-clouddevopsengin-project4"
+dockerpath="leok13/$app"
+forceUpdate=${1:-false}
 
-# Step 2
+# Step 2.1
+# Check pod before deployment
+listpodname=$(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name} {end}')
+
+# Step 2.2
 # Run the Docker Hub container with kubernetes
-kubectl run duytt10-clouddevopsengin-project4 --image=$dockerpath --port=80 --labels app=duytt10-clouddevopsengin-project4
+if [[ $listpodname =~ (^|[[:space:]])$app($|[[:space:]]) ]]; then
+    if [[ $forceUpdate == true ]]; then
+        echo "force update"
+        kubectl delete pods $app
+        kubectl run duytt10-clouddevopsengin-project4 --image=$dockerpath --port=80 --labels app=$app
+    else
+        echo "pod $app has already created"
+    fi
+else
+    kubectl run duytt10-clouddevopsengin-project4 --image=$dockerpath --port=80 --labels app=$app
+fi
 
 # Step 3:
 # List kubernetes pods
