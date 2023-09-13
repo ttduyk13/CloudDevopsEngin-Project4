@@ -1,0 +1,1 @@
+. ~/.devops/Scripts/activate
