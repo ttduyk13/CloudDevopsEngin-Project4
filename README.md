@@ -24,28 +24,89 @@ You can find a detailed [project rubric, here](https://review.udacity.com/#!/rub
 
 ---
 
+## Setup repository
+1. Create a new public repository with name CloudDevopsEngin-Project4
+2. Clone this repository to my local
+3. Copy git clone https://github.com/udacity/DevOps_Microservices.git for get the template project
+4. cp DevOps_Microservices/project-ml-microservice-kubernetes into CloudDevopsEngin-Project4 repository
+
 ## Setup the Environment
 
-* Create a virtualenv with Python 3.7 and activate it. Refer to this link for help on specifying the Python version in the virtualenv. 
-```bash
-python3 -m pip install --user virtualenv
-# You should have Python 3.7 available in your host. 
-# Check the Python path using `which python3`
-# Use a command similar to this one:
-python3 -m virtualenv --python=<path-to-Python3.7> .devops
-source .devops/bin/activate
+[I. Setup python](#setup-python)
+1. install pyenv:
 ```
-* Run `make install` to install the necessary dependencies
+curl https://pyenv.run | bash
+```
 
-### Running `app.py`
+2. Add pyenv into ~/.bashrc
+```
+# pyenv
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv virtualenv-init -)"
+```
+3. Restart shell
+```
+exec $SHELL
+```
+4. Install Python 3.7 (in this case I will use version 3.7.3)
+```
+pyenv install 3.7.3
+# if you has issue when install try this
+sudo apt install clang -y
+CC=clang pyenv install 3.7.3
+```
 
-1. Standalone:  `python app.py`
-2. Run in Docker:  `./run_docker.sh`
-3. Run in Kubernetes:  `./run_kubernetes.sh`
+[II. Setup local environment](#setup-local-environment)
+```
+# setup local env
+make setup
+source ~/.devops/bin/activate
+make install
 
-### Kubernetes Steps
+# install hadolint
+sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+sudo chmod +x /bin/hadolint
 
-* Setup and Configure Docker locally
-* Setup and Configure Kubernetes locally
-* Create Flask app in Container
-* Run via kubectl
+# Run lint checks
+make lint
+```
+
+[III. Setup kubectl and minikube](#setup-kubectl-minikube)
+1. Install kubectl: [link](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+2. Install minikube: [link](https://kubernetes.io/vi/docs/tasks/tools/install-minikube/#c%C3%A0i-%C4%91%E1%BA%B7t-minikube-th%C3%B4ng-qua-t%E1%BA%A3i-xu%E1%BB%91ng-tr%E1%BB%B1c-ti%E1%BA%BFp)
+3. Verify kubectl and minikube
+```
+kubectl version
+minikube version
+```
+
+[IV. Docker steps](#docker_steps)
+
+1. Complete Dockerfile
+
+This file will include list of instructions to build a Docker image for application
+
+2. Complete run_docker.sh and run it to build a image
+
+This script will build image with tag and run flask app inside a container with exposing port 80 to 8000
+
+3. Complete upload_docker.sh and run it to upload image
+
+This script will login into docker, then tag and push it into my docker hub [here](https://hub.docker.com/repository/docker/leok13/duytt10-clouddevopsengin-project4/general)
+
+[IV. Kubernetes steps](#kubernetes_steps)
+1. Start minikube to create a cluster in local
+
+```minikube start```
+
+2. Complete run_kubernetes.sh
+
+This script will deploy docker image and run it with fixed port then it will forward container port to a host for outbound
+
+
+[V. Setup CircleCI](#setup_circleci)
+1. Connect repo to CircleCI [guide](https://circleci.com/docs/getting-started/)
+2. Copy config.yml from support material [file](https://video.udacity-data.com/topher/2019/May/5cda234b_config/config.yml)
+3. Commit code to run pipeline
+4. Add status bagde from [link](https://circleci.com/docs/2.0/status-badges/)
