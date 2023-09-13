@@ -52,6 +52,9 @@ exec $SHELL
 4. Install Python 3.7 (in this case I will use version 3.7.3)
 ```
 pyenv install 3.7.3
+# if you has issue when install try this
+sudo apt install clang -y
+CC=clang pyenv install 3.7.3
 ```
 
 [II. Setup local environment](#setup-local-environment)
